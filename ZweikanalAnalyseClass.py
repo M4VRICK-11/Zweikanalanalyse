@@ -252,7 +252,7 @@ class ZweikanalAnalyse:
         
     def set_psd_csd(self, freqs, psd1, psd2, csd,block_size):
         '''
-        Speichert den realen Anteil von den berechneten Autoeistungsspektren und den Betrag vom berechneten Kreuzleistungsspektrum.
+        Speichert die berechneten Autoeistungsspektren und das berechnete Kreuzleistungsspektrum von beiden Signalen.
 
         Die Funktion speichert ebenso die Frequenzachse zur Visualisierung der Spektren.
 
@@ -266,9 +266,9 @@ class ZweikanalAnalyse:
         Note:
             Die Methode speichert die berecheten Größen in:
 
-            - `self.psd1` (ndarray): Objektattribut zum berechneten realen Anteil des Autoleistungsspektrums vom Signal 1
-            - `self.psd2` (ndarray): Objektattribut zum berechneten realen Anteil des Autoleistungsspektrums vom Signal 2
-            - `self.csd` (ndarray): Objektattribut zum berechneten Betrag des Kreuzleistungsspektrums der Signale
+            - `self.psd1` (ndarray): Objektattribut zum berechneten  Autoleistungsspektrum vom Signal 1
+            - `self.psd2` (ndarray): Objektattribut zum berechneten  Autoleistungsspektrum vom Signal 2
+            - `self.csd` (ndarray): Objektattribut zum berechneten  Kreuzleistungsspektrum der Signale
             - `self.freqs` (ndarray): Objektattribut zur erzeugten Frequenzachse für die Visualisierung der Auto- und Kreuzleistungsspektren.
         '''
         # self.windowSize = block_size
@@ -279,13 +279,13 @@ class ZweikanalAnalyse:
 
     def computeFrequencyResponse(self):
         '''
-        Berechnet den Betrag des Frequenzgangs :math:`\\left| H(f) \\right|` aus der Kreuzleistungsmatrix.
+        Berechnet den Frequenzgang :math:`H(f)` aus der Kreuzleistungsmatrix.
 
         Der Frequenzgang ist nach dem H1-Schätzer wie folgt definiert als:
 
         .. math::
 
-            \\left| H(f) \\right| = \\frac{\\left| C_{xy}(f) \\right|}{C_{xx}(f)}
+            H(f) = \\frac{C_{xy}(f)}{C_{xx}(f)}
 
         Dabei ist :math:`C_{xy}(f)` das Kreuzleistungsspektrum und
         :math:`C_{xx}(f)` das AutoLeistungsspektrum vom Signal 1 (Kanal 1).
@@ -298,7 +298,7 @@ class ZweikanalAnalyse:
 
             Die Methode berechnet:
 
-            - `H` (ndarray): Den berechneten Betrag des Frequenzganges.
+            - `H` (ndarray): deb Frequenzgang zum betrachteten Schallübertragungssystem.
 
             Das Ergebnis wird mit der `set_transfer_function()` Methode gespeichert. (Siehe Dokumentation)
         '''
@@ -308,38 +308,38 @@ class ZweikanalAnalyse:
 
     def set_transfer_function(self, H):
         '''
-        Speichert den Betrag des Frequenzgangs :math:`\\left| H(f) \\right|`.
+        Speichert den Frequenzgang :math:`H(f)`.
 
         Args:
-            H (array): Betrag des Frequenzgangs :math:`\\left| H(f) \\right|` des betrachteten Schallübertragungssystems
+            H (array): der Frequenzgang :math:`H(f)` des betrachteten Schallübertragungssystems
 
         Note:
             Die Methode speichert die berecheten Größen in:
 
-            - `self.H` (ndarray): Objektattribut zum berechneten Betrag des Frequenzgangs
+            - `self.H` (ndarray): Objektattribut zum berechneten Frequenzgang
         '''
         self.H = H
 
     def computeImpulseResponse(self):
         '''
-        Berechnet näherungsweise die Impulsantwort :math:`h(t)` im Zeitbereich über die inverse FFT des Frequenzgangsbetrags :math:`\\left| H(f) \\right|`.
+        Rekonstruiert die Impulsantwort :math:`h(t)` im Zeitbereich über die inverse FFT des Frequenzgangs :math:`H(f)`.
 
-        Diese Methode berechnet die Impulsantwort näherungsweise mit der inversen FFT Funktion von Numpy `np.fft.irfft()`.
+        Diese Methode berechnet die Impulsantwort mit der inversen FFT Funktion von Numpy `np.fft.irfft()`.
 
         Die Impulsantwort ist definiert als:
 
         .. math::
 
-            h(t) = \\frac{d}{dt} \\left| H(f) \\right|
+            h(t) = \\frac{d}{dt} H(f)
         
         Note:
             Erforderlich für die Berechnung ist:
 
-            - `self.H`  (ndarray) : Den berechneten Betrag des Frequenzganges.
+            - `self.H`  (ndarray) : Den berechneten Frequenzgang.
 
             Die Methode berechnet:
 
-            - `h` (ndarray): Die Näherung der Impulsantwort vom betrachteten Schallsystem.
+            - `h` (ndarray): Die rekonstruierte Impulsantwort vom betrachteten Schallübertragungssystem.
 
             Das Ergebnis wird mit der `set_impulse_response()` Methode gespeichert. (Siehe Dokumentation)
         '''
@@ -348,7 +348,7 @@ class ZweikanalAnalyse:
 
     def set_impulse_response(self, h):
         '''
-        Speichert die näherungsweise berecheneten Impulsantwort h(t).
+        Speichert die berechnete Impulsantwort h(t).
         
         Die Methode erzeugt auch eine Zeitachse für die Visualisierung des Ergebnisses.
 
@@ -356,13 +356,13 @@ class ZweikanalAnalyse:
             h (array): Impulsantwort im Zeitbereich
         
         Note:
-            Die Methode speichert die berecheten Näherung der Impulsantwort (`h`) in:
+            Die Methode speichert die berechete Impulsantwort (`h`) in:
 
-            - `self.impulse_response` (ndarray): Objektattribut zur berechneten Näherung der Impulsantwort
+            - `self.impulse_response` (ndarray): Objektattribut zur rekonstruierten Impulsantwort
 
             Die Methode speichert die erzeugte Zeitachse für die spätere Visualisierung:
 
-            - `self.time_axis` (ndarray): Objektattribut zur erzeugten Zeitachse für die Visualisierung der näherungsweise berechneten Impulsantwort.
+            - `self.time_axis` (ndarray): Objektattribut zur erzeugten Zeitachse für die Visualisierung der berechneten Impulsantwort.
         '''
         self.time_axis          = np.arange(len(h)) / self.fs
         self.impulse_response   = h

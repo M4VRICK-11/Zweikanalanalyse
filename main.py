@@ -7,9 +7,15 @@ from bokeh.models import Button, ColumnDataSource, Slider, Div, FileInput
 from ZweikanalAnalyseClass import ZweikanalAnalyse
 import base64
 import shutil
-import spectacoular
+# import spectacoular
+import os
 
-def calculate_all(signal1Path = "Audiosignale/signal1.wav", signal2Path = "Audiosignale/signal2.wav"):
+# Speichert den aktuellen Pfad (auf deinem Rechner) von main.py
+# nötig , weil sphinx von /docs läuft und relative Pfade
+# zu Problemen führen
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+def calculate_all(signal1Path = os.path.join(BASE_DIR, "Audiosignale", "signal1.wav"), signal2Path = os.path.join(BASE_DIR, "Audiosignale", "signal2.wav")):
     '''
     Führt die gesamte Analyse durch und gibt ein ZweikanalAnalyse-Objekt zurück.
     Args:
@@ -85,10 +91,10 @@ def save_uploaded_file(file_input, filename):
 
 # Callbacks für die FileInputs
 def on_file_input_0_change(attr, old, new):
-    save_uploaded_file(file_input_0, "Audiosignale/signal1_aktuell.wav")
+    save_uploaded_file(file_input_0, os.path.join(BASE_DIR, "Audiosignale", "signal1_aktuell.wav"))
 
 def on_file_input_1_change(attr, old, new):
-    save_uploaded_file(file_input_1, "Audiosignale/signal2_aktuell.wav")
+    save_uploaded_file(file_input_1, os.path.join(BASE_DIR, "Audiosignale", "signal2_aktuell.wav"))
 
 file_input_0.on_change("value", on_file_input_0_change)
 file_input_1.on_change("value", on_file_input_1_change)
@@ -101,12 +107,12 @@ my_button = Button(label="Analyse starten", button_type="success")
 my_button.on_click(lambda: on_button_click())
 
 # kopiere die Signale signal1.wav und signal2.wav und speichere sie als signal1_aktuell.wav und signal2_aktuell.wav
-shutil.copy("Audiosignale/sine.wav", "Audiosignale/signal1_aktuell.wav")
-shutil.copy("Audiosignale/sine_rough.wav", "Audiosignale/signal2_aktuell.wav")
+shutil.copy(os.path.join(BASE_DIR, "Audiosignale", "signal1.wav"), os.path.join(BASE_DIR, "Audiosignale", "signal1_aktuell.wav"))
+shutil.copy(os.path.join(BASE_DIR, "Audiosignale", "signal2.wav"), os.path.join(BASE_DIR, "Audiosignale", "signal2_aktuell.wav"))
 
 # Pfad zu den Audiosignalen
-signal1Path = "Audiosignale/signal1_aktuell.wav"
-signal2Path = "Audiosignale/signal2_aktuell.wav"
+signal1Path = os.path.join(BASE_DIR, "Audiosignale", "signal1_aktuell.wav")
+signal2Path = os.path.join(BASE_DIR, "Audiosignale", "signal2_aktuell.wav")
 
 # Berechnung der Analyse für die default-Signale
 Analyse = calculate_all(signal1Path, signal2Path)
@@ -175,8 +181,8 @@ def on_button_click():
     Sie lädt die aktuell ausgewählten Signale und berechnet alle Analysewerte neu.
     '''
     # Lade die aktuell ausgewählten Signale
-    signal1Path = "Audiosignale/signal1_aktuell.wav"
-    signal2Path = "Audiosignale/signal2_aktuell.wav"
+    signal1Path = os.path.join(BASE_DIR, "Audiosignale", "signal1_aktuell.wav")
+    signal2Path = os.path.join(BASE_DIR, "Audiosignale", "signal2_aktuell.wav")
     Analyse = calculate_all(signal1Path,signal2Path)
 
     time_axis = np.arange(len(Analyse.impulse_response))/Analyse.fs
