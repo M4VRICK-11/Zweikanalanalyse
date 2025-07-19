@@ -258,7 +258,7 @@ curdoc().add_root(layout)
 # You can also adjust the downsampling factor to see how it affects the results.
 # for testing purposes, you can use the default audio files in the Audiosignale directory.
 # The file-pairs are:
-#       sine.wav and sine_with_noise.wav
+#       signal1.wav and signal2.wav
 #       noise_a.wav and noise_b.wav
 #       blue_audio.wav and blue_audio_muffled.wav
 # The default files are already copied to the Audiosignale directory.
