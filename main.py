@@ -14,16 +14,38 @@ import os
 # nötig , weil sphinx von /docs läuft und relative Pfade
 # zu Problemen führen
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Hier werden die nötigen Pfade in Variablen gespeichert
+# dies dient der Nachvollziebarkeit der Doku
+# Pfade zu den Audiosignalen mit denen die Software gestartet wird
+Standard_signal1 = os.path.join(BASE_DIR, "Audiosignale", "signal1.wav")
+Standard_signal2 = os.path.join(BASE_DIR, "Audiosignale", "signal2.wav")
+# Pfade zu den aktuell zu analysierenden Signalen:
+Signal1_aktuell = os.path.join(BASE_DIR, "Audiosignale", "signal1_aktuell.wav")
+Signal2_aktuell = os.path.join(BASE_DIR, "Audiosignale", "signal2_aktuell.wav")
 
-def calculate_all(signal1Path = os.path.join(BASE_DIR, "Audiosignale", "signal1.wav"), signal2Path = os.path.join(BASE_DIR, "Audiosignale", "signal2.wav")):
+
+
+def calculate_all(signal1Path: str = None, signal2Path: str = None):
     '''
     Führt die gesamte Analyse durch und gibt ein ZweikanalAnalyse-Objekt zurück.
+
     Args:
         signal1Path (str): Pfad zur WAV-Datei des ersten Signals.
         signal2Path (str): Pfad zur WAV-Datei des zweiten Signals.
+
     Returns:
         ZweikanalAnalyse: Ein Objekt der Klasse ZweikanalAnalyse mit den berechneten Werten.
+
+    Hinweis:
+        Wenn keine Dateien ausgewählt sind i.e. Signal1Path und Signal2Path None sind, werden Standardsignale aus dem Projektordner verwendet.
+
     '''
+    # Stellt die Pfade zu den Standardsignalen (nur für die Initialisierung) ein
+    if signal1Path is None:
+        signal1Path = Standard_signal1
+    if signal2Path is None:
+        signal2Path = Standard_signal2
+    
     # Lade die Signale
     ts,fs = ZweikanalAnalyse.loadSignalWAV(signal1Path, signal2Path)
     sig1 = ts.data[:,0]
@@ -49,12 +71,15 @@ def calculate_all(signal1Path = os.path.join(BASE_DIR, "Audiosignale", "signal1.
 def smooth(data, window_length=21, polyorder=3):
     '''
     Glättet die Daten mit einem Savitzky-Golay-Filter.
+
     Args:
         data (array-like): Die zu glättenden Daten.
         window_length (int): Länge des Fensters für den Savitzky-Golay-Filter.
         polyorder (int): Ordnung des Polynoms für den Savitzky-Golay-Filter.
+
     Returns:
         array-like: Die geglätteten Daten.
+
     '''
     if len(data) < window_length:
         window_length = max(3, len(data) // 2 * 2 + 1)
@@ -78,10 +103,12 @@ file_input_1 = FileInput(accept=".wav")
 
 def save_uploaded_file(file_input, filename):
     '''
-    Speichert die hochgeladene Datei in einem bestimmten Verzeichnis.
+    Speichert die hochgeladene Datei in einem Arbeits-Verzeichnis.
+
     Args:
         file_input (FileInput): Das Bokeh FileInput Widget.
         filename (str): Der Pfad, unter dem die Datei gespeichert werden soll.
+
     '''
     if file_input.value:
         # Decode base64 and save to file
@@ -91,10 +118,19 @@ def save_uploaded_file(file_input, filename):
 
 # Callbacks für die FileInputs
 def on_file_input_0_change(attr, old, new):
-    save_uploaded_file(file_input_0, os.path.join(BASE_DIR, "Audiosignale", "signal1_aktuell.wav"))
+    """
+    Callback, der beim Hochladen der ersten Datei aufgerufen wird.
+    Speichert die Datei lokal in der Projekt-directory in einem Ordner namens "Audiosignale".
+    """
+    save_uploaded_file(file_input_0, Signal1_aktuell)
 
 def on_file_input_1_change(attr, old, new):
-    save_uploaded_file(file_input_1, os.path.join(BASE_DIR, "Audiosignale", "signal2_aktuell.wav"))
+    """
+    Callback, der beim Hochladen der zweiten Datei aufgerufen wird.
+    Speichert die Datei lokal in der Projekt-directory in einem Ordner namens "Audiosignale".
+    """
+
+    save_uploaded_file(file_input_1, Signal2_aktuell)
 
 file_input_0.on_change("value", on_file_input_0_change)
 file_input_1.on_change("value", on_file_input_1_change)
@@ -107,12 +143,12 @@ my_button = Button(label="Analyse starten", button_type="success")
 my_button.on_click(lambda: on_button_click())
 
 # kopiere die Signale signal1.wav und signal2.wav und speichere sie als signal1_aktuell.wav und signal2_aktuell.wav
-shutil.copy(os.path.join(BASE_DIR, "Audiosignale", "signal1.wav"), os.path.join(BASE_DIR, "Audiosignale", "signal1_aktuell.wav"))
-shutil.copy(os.path.join(BASE_DIR, "Audiosignale", "signal2.wav"), os.path.join(BASE_DIR, "Audiosignale", "signal2_aktuell.wav"))
+shutil.copy(Standard_signal1, Signal1_aktuell)
+shutil.copy(Standard_signal2, Signal2_aktuell)
 
 # Pfad zu den Audiosignalen
-signal1Path = os.path.join(BASE_DIR, "Audiosignale", "signal1_aktuell.wav")
-signal2Path = os.path.join(BASE_DIR, "Audiosignale", "signal2_aktuell.wav")
+signal1Path = Signal1_aktuell
+signal2Path = Signal2_aktuell
 
 # Berechnung der Analyse für die default-Signale
 Analyse = calculate_all(signal1Path, signal2Path)
@@ -179,10 +215,11 @@ def on_button_click():
     '''
     Callback-Funktion, die ausgeführt wird, wenn der Button geklickt wird.
     Sie lädt die aktuell ausgewählten Signale und berechnet alle Analysewerte neu.
+
     '''
     # Lade die aktuell ausgewählten Signale
-    signal1Path = os.path.join(BASE_DIR, "Audiosignale", "signal1_aktuell.wav")
-    signal2Path = os.path.join(BASE_DIR, "Audiosignale", "signal2_aktuell.wav")
+    signal1Path = Signal1_aktuell
+    signal2Path = Signal2_aktuell
     Analyse = calculate_all(signal1Path,signal2Path)
 
     time_axis = np.arange(len(Analyse.impulse_response))/Analyse.fs
