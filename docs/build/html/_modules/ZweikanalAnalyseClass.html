@@ -1,0 +1,749 @@
+<!doctype html>
+<html class="no-js" lang="de" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Stichwortverzeichnis" href="../genindex.html" /><link rel="search" title="Suche" href="../search.html" />
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
+        <title>ZweikanalAnalyseClass - Python &amp; Akustik - Zweikanalanalysator</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=82db86ab" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Python & Akustik - Zweikanalanalysator</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/logo.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Python & Akustik - Zweikanalanalysator</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Suche" name="q" aria-label="Suche">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Inhaltsverzeichnis</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../modules.html">Aufbau der Software</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Aufbau der Software</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Class%20zur%20Zweikanalanalyse.html">Class zur Zweikanalanalyse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Der%20main%20Code.html">Der main Code</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <h1>Quellcode für ZweikanalAnalyseClass</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">acoular</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ac</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">correlate</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">soundfile</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sf</span>
+
+<div class="viewcode-block" id="ZweikanalAnalyse">
+<a class="viewcode-back" href="../Class%20zur%20Zweikanalanalyse.html#ZweikanalAnalyseClass.ZweikanalAnalyse">[Doku]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ZweikanalAnalyse</span><span class="p">:</span>
+<div class="viewcode-block" id="ZweikanalAnalyse.__init__">
+<a class="viewcode-back" href="../Class%20zur%20Zweikanalanalyse.html#ZweikanalAnalyseClass.ZweikanalAnalyse.__init__">[Doku]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal1</span><span class="p">,</span> <span class="n">signal2</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Instanziert ein Objekt der Signalanalyse-Klasse `Zweikanalanalyse`</span>
+<span class="sd">        mit den folgenden Parametern.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            signal1 (array): Der zeitdiskrete Signal 1 vom Kanal 1</span>
+<span class="sd">            signal2 (array): Der zeitdiskrete Signal 2 vom Kanal 2</span>
+<span class="sd">            fs (int): Abtastrate der Signale in Hz</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signal1</span>    <span class="o">=</span> <span class="n">signal1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signal2</span>    <span class="o">=</span> <span class="n">signal2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fs</span>         <span class="o">=</span> <span class="n">fs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">duration</span>   <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">signal1</span><span class="p">)</span> <span class="o">/</span> <span class="n">fs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tsAcoular</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_tsAcoularObject</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_corr1</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_corr2</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cross_corr</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">freqs</span>      <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">psd1</span>       <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">psd2</span>       <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">csd</span>        <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">H</span>          <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">impulse_response</span>   <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block_size</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">correlationLags</span>    <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coherence</span>  <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_axis</span>  <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lags_sec</span>   <span class="o">=</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="ZweikanalAnalyse.createTestSignal">
+<a class="viewcode-back" href="../Class%20zur%20Zweikanalanalyse.html#ZweikanalAnalyseClass.ZweikanalAnalyse.createTestSignal">[Doku]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">createTestSignal</span><span class="p">(</span><span class="n">fs</span><span class="o">=</span><span class="mi">48000</span><span class="p">,</span><span class="n">duration</span><span class="o">=</span><span class="mf">2.0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Die Funktion erzeugt zwei Testsignale und speichert sie als WAV-Dateien.</span>
+
+<span class="sd">        Signal 1: Reiner Sinus bei 440 Hz</span>
+
+<span class="sd">        Signal 2: Gleicher Sinus + kleine Phase + gaußeschen Rauschen</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            fs (int): Abtastrate in Hz</span>
+<span class="sd">            duration (float): Dauer des Signals in Sekunden</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">fs</span><span class="o">*</span><span class="n">duration</span><span class="p">),</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># Signal 1: Reiner Sinus bei 440 Hz</span>
+        <span class="n">freq</span>    <span class="o">=</span> <span class="mi">440</span>  <span class="c1"># Hz</span>
+        <span class="n">signal1</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+        <span class="c1"># Signal 2: Gleicher Sinus + kleine Phase + Rauschen</span>
+        <span class="n">phase_shift</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span>  <span class="c1"># 45°</span>
+        <span class="n">signal2</span>     <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">phase_shift</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+        <span class="c1"># WAV-Dateien schreiben</span>
+        <span class="n">sf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;signal1.wav&quot;</span><span class="p">,</span> <span class="n">signal1</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+        <span class="n">sf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;signal2.wav&quot;</span><span class="p">,</span> <span class="n">signal2</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ZweikanalAnalyse.loadSignalWAV">
+<a class="viewcode-back" href="../Class%20zur%20Zweikanalanalyse.html#ZweikanalAnalyseClass.ZweikanalAnalyse.loadSignalWAV">[Doku]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">loadSignalWAV</span><span class="p">(</span><span class="n">signal1Path</span><span class="p">,</span> <span class="n">signal2Path</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Lädt die aufbereitete Signale und speichert sie zusammen mit deren Abtastfrequenz in einem Objekt der Klasse Acoular.</span>
+
+<span class="sd">        Die Funktion überprüft, dass die Signallängen überreinstimmen gibt neben das Acoular-Objekt auch die Abtastfrequenz vereinzelt zurück.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            signal1Path (string)   :  Pfad Eingagnssignale</span>
+<span class="sd">            signal2Path (string)   :  Pfad Ausgangssignale</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ac.TimeSamples, int : **Acoular-Objekt**: mit beiden Signalen im Zeitbereich und deren Abtastfrequenz. **fsS1**: die Abtastfrequenz der Signale (separat).</span>
+<span class="sd">    </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># lädt Inhalt der Signale und Abtastrate</span>
+        <span class="n">dataS1</span><span class="p">,</span> <span class="n">fsS1</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">signal1Path</span><span class="p">)</span>
+        <span class="n">dataS2</span><span class="p">,</span> <span class="n">fsS2</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">signal2Path</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="n">fsS1</span> <span class="o">==</span> <span class="n">fsS2</span> <span class="c1"># Überprüft ob Abtastraten gleich sind </span>
+        <span class="n">min_len</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataS1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataS2</span><span class="p">))</span>
+        <span class="n">data</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">dataS1</span><span class="p">[:</span><span class="n">min_len</span><span class="p">],</span> <span class="n">dataS2</span><span class="p">[:</span><span class="n">min_len</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ac</span><span class="o">.</span><span class="n">TimeSamples</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">sample_freq</span><span class="o">=</span><span class="n">fsS1</span><span class="p">),</span> <span class="n">fsS1</span></div>
+
+
+<div class="viewcode-block" id="ZweikanalAnalyse.build_tsAcoularObject">
+<a class="viewcode-back" href="../Class%20zur%20Zweikanalanalyse.html#ZweikanalAnalyseClass.ZweikanalAnalyse.build_tsAcoularObject">[Doku]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build_tsAcoularObject</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Speichert die zwei Signale sowie deren Abtastfrequenz in einem</span>
+<span class="sd">        Acoular-Objekt. </span>
+
+<span class="sd">        Der Acoular-Objekt sorgt für Kompatibilität mit den Acoular Methoden und Funktionen, die für weitere Analysen notwendig sind.</span>
+<span class="sd">        </span>
+<span class="sd">        Note:</span>
+<span class="sd">            Erforderlich für die Konvertierung sind:</span>
+
+<span class="sd">            - `self.signal1`  (ndarray) : Der zeitdiskrete Audiosignal vom Kanal 1.</span>
+<span class="sd">            - `self.signal2`  (ndarray) : Der zeitdiskrete Audiosignal vom Kanal 2.</span>
+<span class="sd">            - `self.fs`       (int)     : Die Abtastfrequenz von beiden Audiosignalen.</span>
+
+<span class="sd">            Gibt zurück:</span>
+
+<span class="sd">            - Acoular-Objekt  (ac.TimeSample): Enthält die zeitdiskreten Signaldaten und die Abtastfrequenz.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">signal1</span><span class="p">[:],</span> <span class="bp">self</span><span class="o">.</span><span class="n">signal2</span><span class="p">[:]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ac</span><span class="o">.</span><span class="n">TimeSamples</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">sample_freq</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fs</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="ZweikanalAnalyse.computeCorrelations">
+<a class="viewcode-back" href="../Class%20zur%20Zweikanalanalyse.html#ZweikanalAnalyseClass.ZweikanalAnalyse.computeCorrelations">[Doku]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">computeCorrelations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Berechnet die Auto- und Kreuzkorrelation von zwei zu analysierenden zeitdiskreten Signalen.</span>
+
+<span class="sd">        Für die Berechnung der Auto- und Kreuzkorrelation wird die `scipy.signal.correlate()` Funktion</span>
+<span class="sd">        eingesetzt.</span>
+<span class="sd">        </span>
+<span class="sd">        Note:</span>
+<span class="sd">            Erforderlich für die Berechnung ist:</span>
+
+<span class="sd">            - `self.tsAcoular` (acoular.TimeSamples) : Ein Acoular-Objekt, das die zeitdiskreten Signaldaten und deren Abtastfrequenz enthält.</span>
+<span class="sd">            </span>
+<span class="sd">            Die Methode berechnet:</span>
+
+<span class="sd">            - `lags`        (array): Array der Zeitverzögerungen (Samples)</span>
+<span class="sd">            - `auto_corr1`  (array): Autokorrelation von Kanal 1</span>
+<span class="sd">            - `auto_corr2`  (array): Autokorrelation von Kanal 2</span>
+<span class="sd">            - `cross_corr`  (array): Kreuzkorrelation zwischen Kanal 1 und 2</span>
+
+<span class="sd">            Die Ergebnisse werden mit den `set_correlation_lags()`, `set_autocorrelations()` und `set_cross_correlation()` Methoden gespeichert. (Siehe die jeweilige Dokumentation)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># Daten aus ts Objekt extrahieren</span>
+        <span class="n">sig1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">signal1</span>
+        <span class="n">sig2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">signal2</span>
+
+        <span class="c1"># Correlate-Objekt initialisieren</span>
+        <span class="n">auto_corr1</span> <span class="o">=</span> <span class="n">correlate</span><span class="p">(</span><span class="n">sig1</span><span class="p">,</span> <span class="n">sig1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">)</span>
+        <span class="n">auto_corr2</span> <span class="o">=</span> <span class="n">correlate</span><span class="p">(</span><span class="n">sig2</span><span class="p">,</span> <span class="n">sig2</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">)</span>
+        <span class="n">cross_corr</span> <span class="o">=</span> <span class="n">correlate</span><span class="p">(</span><span class="n">sig1</span><span class="p">,</span> <span class="n">sig2</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Lags berechnen</span>
+        <span class="n">lags</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">tsAcoular</span><span class="o">.</span><span class="n">numsamples</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>  <span class="bp">self</span><span class="o">.</span><span class="n">tsAcoular</span><span class="o">.</span><span class="n">numsamples</span><span class="p">)</span>
+        
+        <span class="c1"># Werte speichern</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_autocorrelations</span><span class="p">(</span> <span class="n">auto_corr1</span><span class="p">,</span> <span class="n">auto_corr2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_cross_correlation</span><span class="p">(</span> <span class="n">cross_corr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_correlation_lags</span><span class="p">(</span><span class="n">lags</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ZweikanalAnalyse.set_correlation_lags">
+<a class="viewcode-back" href="../Class%20zur%20Zweikanalanalyse.html#ZweikanalAnalyseClass.ZweikanalAnalyse.set_correlation_lags">[Doku]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_correlation_lags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lags</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Speichert die Lags der Korrelationen. Diese dienen der Erstellung einer Zeitachse zur Visualisierung der Auto- und Kreuzkorrelationfunktionen.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            lags (array): Array der Zeitverzögerungen in Samples</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Die Methode speichert die Zeitverzögerungen (`lags`) zwischen den Signalen in:</span>
+
+<span class="sd">            - `self.correlationLags` (ndarray): Objektattribut zu den Korrelations-Lags</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">correlationLags</span> <span class="o">=</span> <span class="n">lags</span></div>
+
+        
+<div class="viewcode-block" id="ZweikanalAnalyse.set_autocorrelations">
+<a class="viewcode-back" href="../Class%20zur%20Zweikanalanalyse.html#ZweikanalAnalyseClass.ZweikanalAnalyse.set_autocorrelations">[Doku]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_autocorrelations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ac1</span><span class="p">,</span> <span class="n">ac2</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Speichert die Autokorrelationen der Signale.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ac1 (array): Autokorrelation des ersten Signals</span>
+<span class="sd">            ac2 (array): Autokorrelation des zweiten Signals</span>
+<span class="sd">        </span>
+<span class="sd">        Note:</span>
+<span class="sd">            Die Methode speichert die berecheten Autokorrelationen (`ac1` und `ac2`) in:</span>
+
+<span class="sd">            - `self.auto_corr1` (ndarray): Objektattribut zur berechneten Autokorrelation vom Signal 1</span>
+<span class="sd">            - `self.auto_corr2` (ndarray): Objektattribut zur berechneten Autokorrelation vom Signal 2</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_corr1</span> <span class="o">=</span> <span class="n">ac1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_corr2</span> <span class="o">=</span> <span class="n">ac2</span></div>
+
+
+<div class="viewcode-block" id="ZweikanalAnalyse.set_cross_correlation">
+<a class="viewcode-back" href="../Class%20zur%20Zweikanalanalyse.html#ZweikanalAnalyseClass.ZweikanalAnalyse.set_cross_correlation">[Doku]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_cross_correlation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cc</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Speichert die Kreuzkorrelation der Signale.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            cc (array): Kreuzkorrelation zwischen den beiden Signalen</span>
+<span class="sd">        </span>
+<span class="sd">        Note:</span>
+<span class="sd">            Die Methode speichert die berecheten Kreuzkorrelation (`cc`) in:</span>
+
+<span class="sd">            - `self.cross_corr` (ndarray): Objektattribut zur berechneten Kreuzkorrelation zwischen Signal 1 und 2</span>
+<span class="sd"> </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cross_corr</span> <span class="o">=</span> <span class="n">cc</span></div>
+
+        
+<div class="viewcode-block" id="ZweikanalAnalyse.setField">
+<a class="viewcode-back" href="../Class%20zur%20Zweikanalanalyse.html#ZweikanalAnalyseClass.ZweikanalAnalyse.setField">[Doku]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldName</span><span class="p">,</span> <span class="n">fieldValue</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Speichert ein beliebiges Feld im ZweikanalAnalyse-Objekt.</span>
+
+<span class="sd">        Diese Funktion dient der Erweiterbarkeit der Software, indem sie dem Programmierer erlaubt, weitere berechneten Größen zu speichern.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            fieldName (str): Name des Feldes, das gespeichert werden soll.</span>
+<span class="sd">            fieldValue: Wert des Feldes, das gespeichert werden soll.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldName</span><span class="p">,</span> <span class="n">fieldValue</span><span class="p">)</span></div>
+
+        
+<div class="viewcode-block" id="ZweikanalAnalyse.computePSD_CSD">
+<a class="viewcode-back" href="../Class%20zur%20Zweikanalanalyse.html#ZweikanalAnalyseClass.ZweikanalAnalyse.computePSD_CSD">[Doku]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">computePSD_CSD</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">block_size</span><span class="o">=</span><span class="mi">512</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Transformiert die zeitdiskreten Signale in den Frequenzbereich und berechnet die Auto- und Kreuzleistungsspektren.</span>
+
+<span class="sd">        - Berechnet die Gesamtanzahl an Segmenten (`nBlocks`) durch die Teilung der Gesamtanzahl an Samples in den zeitdiskreten</span>
+<span class="sd">          Signalen durch die festgelegte Segmentlänge (`Block_size`).</span>
+
+<span class="sd">        - Instanziert einen RFFT Acoular-Generator (`acoular.spectra.RFFT`) mit den zeitdiskreten Signalen und deren Abtastfrequenz,</span>
+<span class="sd">          um auf die realen FFT der Signale vorzubereiten.</span>
+
+<span class="sd">        - Instanziert einen Acoular-Generator (`acoular.spectra.CrossPowerSpectra`), der auf den RFFT Generator aufbaut, zur Berechnung</span>
+<span class="sd">          der Auto- und Kreuzleistungsspektren.</span>
+
+<span class="sd">        - Instanziert einen Acoular-Generator (`acoular.process.Average`), der auf die anderen Generatoren aufbaut, um die Scharmittelung</span>
+<span class="sd">          der berechneten Größen zu gewährleisten.</span>
+
+<span class="sd">        - Erzeugt die Kreuzleistungsmatrix (`csmFlat`)</span>
+
+<span class="sd">        - Extrahiert die Auto- und Kreuzleistungsspektren.</span>
+
+<span class="sd">        Note:</span>
+
+<span class="sd">            Erforderlich für die Berechnung:</span>
+
+<span class="sd">            - `self.tsAcoular` (acoular.TimeSamples) : Enthält Daten der beiden zeitdiskreten Signale und deren Abtastfrequenz</span>
+<span class="sd">            </span>
+<span class="sd">            Die Methode berechnet:</span>
+
+<span class="sd">            - `psd1` (array) : Das Autoleistungsspektrum vom Signal 1 (Kanal 1)</span>
+<span class="sd">            - `psd2` (array) : Das Autoleistungsspektrum vom Signal 2 (Kanal 2)</span>
+<span class="sd">            - `csd`  (array) : Das Kreuzleistungsspektrum von beiden Signalen</span>
+
+<span class="sd">            Die Ergebnisse werden mit der `set_psd_csd()` Methode überarbeitet und gespeichert. (Siehe die jeweilige Dokumentation)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># Anzahl Blöcke über die Ergebnisse gemittelt werden</span>
+        <span class="n">nBlocks</span>     <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tsAcoular</span><span class="o">.</span><span class="n">numsamples</span><span class="o">/</span><span class="n">block_size</span><span class="p">)</span>
+        <span class="c1"># FFT</span>
+        <span class="n">fft</span>         <span class="o">=</span> <span class="n">ac</span><span class="o">.</span><span class="n">RFFT</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tsAcoular</span><span class="p">,</span> <span class="n">block_size</span><span class="o">=</span><span class="n">block_size</span><span class="p">)</span>
+        <span class="n">fft</span><span class="o">.</span><span class="n">scaling</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span>
+        <span class="c1"># Bilde Auto-/Kreuzleistungsspektrum  </span>
+        <span class="n">cps</span>         <span class="o">=</span> <span class="n">ac</span><span class="o">.</span><span class="n">CrossPowerSpectra</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">fft</span><span class="p">)</span>
+        <span class="c1"># Mittelwert für jeden Block</span>
+        <span class="n">avg</span>         <span class="o">=</span> <span class="n">ac</span><span class="o">.</span><span class="n">Average</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">cps</span><span class="p">,</span> <span class="n">naverage</span><span class="o">=</span><span class="n">nBlocks</span><span class="p">)</span>
+        <span class="n">csmFlat</span>     <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">avg</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="n">num</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+        <span class="c1"># Dimension anpassen so dass cms PSD und CPSD gesondert in einem array</span>
+        <span class="n">csmMatrix</span>   <span class="o">=</span> <span class="n">csmFlat</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">numfreqs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tsAcoular</span><span class="o">.</span><span class="n">num_channels</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tsAcoular</span><span class="o">.</span><span class="n">num_channels</span><span class="p">)</span>
+        <span class="n">psd1</span>        <span class="o">=</span> <span class="n">csmMatrix</span><span class="p">[:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">psd2</span>        <span class="o">=</span> <span class="n">csmMatrix</span><span class="p">[:,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">csd</span>         <span class="o">=</span> <span class="n">csmMatrix</span> <span class="p">[:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># Werte speichern</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_psd_csd</span><span class="p">(</span> <span class="n">fft</span><span class="o">.</span><span class="n">freqs</span><span class="p">,</span> <span class="n">psd1</span><span class="p">,</span> <span class="n">psd2</span><span class="p">,</span> <span class="n">csd</span><span class="p">,</span><span class="n">block_size</span><span class="p">)</span></div>
+
+        
+<div class="viewcode-block" id="ZweikanalAnalyse.set_psd_csd">
+<a class="viewcode-back" href="../Class%20zur%20Zweikanalanalyse.html#ZweikanalAnalyseClass.ZweikanalAnalyse.set_psd_csd">[Doku]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_psd_csd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">psd1</span><span class="p">,</span> <span class="n">psd2</span><span class="p">,</span> <span class="n">csd</span><span class="p">,</span><span class="n">block_size</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Speichert die berechneten Autoeistungsspektren und das berechnete Kreuzleistungsspektrum von beiden Signalen.</span>
+
+<span class="sd">        Die Funktion speichert ebenso die Frequenzachse zur Visualisierung der Spektren.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            freqs (array): Frequenzachse</span>
+<span class="sd">            psd1 (array): Leistungsspektrum des ersten Signals</span>
+<span class="sd">            psd2 (array): Leistungsspektrum des zweiten Signals</span>
+<span class="sd">            csd (array): Kreuzleistungsspektrum zwischen den beiden Signalen</span>
+<span class="sd">            block_size (int): Größe der FFT-Blöcke</span>
+<span class="sd">        </span>
+<span class="sd">        Note:</span>
+<span class="sd">            Die Methode speichert die berecheten Größen in:</span>
+
+<span class="sd">            - `self.psd1` (ndarray): Objektattribut zum berechneten  Autoleistungsspektrum vom Signal 1</span>
+<span class="sd">            - `self.psd2` (ndarray): Objektattribut zum berechneten  Autoleistungsspektrum vom Signal 2</span>
+<span class="sd">            - `self.csd` (ndarray): Objektattribut zum berechneten  Kreuzleistungsspektrum der Signale</span>
+<span class="sd">            - `self.freqs` (ndarray): Objektattribut zur erzeugten Frequenzachse für die Visualisierung der Auto- und Kreuzleistungsspektren.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># self.windowSize = block_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">freqs</span>      <span class="o">=</span> <span class="n">freqs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">psd1</span>       <span class="o">=</span> <span class="n">psd1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">psd2</span>       <span class="o">=</span> <span class="n">psd2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">csd</span>        <span class="o">=</span> <span class="n">csd</span></div>
+
+
+<div class="viewcode-block" id="ZweikanalAnalyse.computeFrequencyResponse">
+<a class="viewcode-back" href="../Class%20zur%20Zweikanalanalyse.html#ZweikanalAnalyseClass.ZweikanalAnalyse.computeFrequencyResponse">[Doku]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">computeFrequencyResponse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Berechnet den Frequenzgang :math:`H(f)` aus der Kreuzleistungsmatrix.</span>
+
+<span class="sd">        Der Frequenzgang ist nach dem H1-Schätzer wie folgt definiert als:</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            H(f) = \\frac{C_{xy}(f)}{C_{xx}(f)}</span>
+
+<span class="sd">        Dabei ist :math:`C_{xy}(f)` das Kreuzleistungsspektrum und</span>
+<span class="sd">        :math:`C_{xx}(f)` das AutoLeistungsspektrum vom Signal 1 (Kanal 1).</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Erforderlich für die Berechnung:</span>
+
+<span class="sd">            - `self.csd`  (ndarray) : Kreuzleistungsspektrum der beiden Signale.</span>
+<span class="sd">            - `self.psd1` (ndarray) : Autoeistungsspektrum des ersten Signals.</span>
+
+<span class="sd">            Die Methode berechnet:</span>
+
+<span class="sd">            - `H` (ndarray): deb Frequenzgang zum betrachteten Schallübertragungssystem.</span>
+
+<span class="sd">            Das Ergebnis wird mit der `set_transfer_function()` Methode gespeichert. (Siehe Dokumentation)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">csd</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">psd1</span>
+        <span class="c1"># Werte speichern</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_transfer_function</span><span class="p">(</span> <span class="n">H</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ZweikanalAnalyse.set_transfer_function">
+<a class="viewcode-back" href="../Class%20zur%20Zweikanalanalyse.html#ZweikanalAnalyseClass.ZweikanalAnalyse.set_transfer_function">[Doku]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_transfer_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">H</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Speichert den Frequenzgang :math:`H(f)`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            H (array): der Frequenzgang :math:`H(f)` des betrachteten Schallübertragungssystems</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Die Methode speichert die berecheten Größen in:</span>
+
+<span class="sd">            - `self.H` (ndarray): Objektattribut zum berechneten Frequenzgang</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">H</span> <span class="o">=</span> <span class="n">H</span></div>
+
+
+<div class="viewcode-block" id="ZweikanalAnalyse.computeImpulseResponse">
+<a class="viewcode-back" href="../Class%20zur%20Zweikanalanalyse.html#ZweikanalAnalyseClass.ZweikanalAnalyse.computeImpulseResponse">[Doku]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">computeImpulseResponse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Rekonstruiert die Impulsantwort :math:`h(t)` im Zeitbereich über die inverse FFT des Frequenzgangs :math:`H(f)`.</span>
+
+<span class="sd">        Diese Methode berechnet die Impulsantwort mit der inversen FFT Funktion von Numpy `np.fft.irfft()`.</span>
+
+<span class="sd">        Die Impulsantwort ist definiert als:</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            h(t) = \\frac{d}{dt} H(f)</span>
+<span class="sd">        </span>
+<span class="sd">        Note:</span>
+<span class="sd">            Erforderlich für die Berechnung ist:</span>
+
+<span class="sd">            - `self.H`  (ndarray) : Den berechneten Frequenzgang.</span>
+
+<span class="sd">            Die Methode berechnet:</span>
+
+<span class="sd">            - `h` (ndarray): Die rekonstruierte Impulsantwort vom betrachteten Schallübertragungssystem.</span>
+
+<span class="sd">            Das Ergebnis wird mit der `set_impulse_response()` Methode gespeichert. (Siehe Dokumentation)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">irfft</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">H</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_impulse_response</span><span class="p">(</span> <span class="n">h</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ZweikanalAnalyse.set_impulse_response">
+<a class="viewcode-back" href="../Class%20zur%20Zweikanalanalyse.html#ZweikanalAnalyseClass.ZweikanalAnalyse.set_impulse_response">[Doku]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_impulse_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Speichert die berechnete Impulsantwort h(t).</span>
+<span class="sd">        </span>
+<span class="sd">        Die Methode erzeugt auch eine Zeitachse für die Visualisierung des Ergebnisses.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            h (array): Impulsantwort im Zeitbereich</span>
+<span class="sd">        </span>
+<span class="sd">        Note:</span>
+<span class="sd">            Die Methode speichert die berechete Impulsantwort (`h`) in:</span>
+
+<span class="sd">            - `self.impulse_response` (ndarray): Objektattribut zur rekonstruierten Impulsantwort</span>
+
+<span class="sd">            Die Methode speichert die erzeugte Zeitachse für die spätere Visualisierung:</span>
+
+<span class="sd">            - `self.time_axis` (ndarray): Objektattribut zur erzeugten Zeitachse für die Visualisierung der berechneten Impulsantwort.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_axis</span>          <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">h</span><span class="p">))</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">fs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">impulse_response</span>   <span class="o">=</span> <span class="n">h</span></div>
+
+            
+<div class="viewcode-block" id="ZweikanalAnalyse.computeCoherence">
+<a class="viewcode-back" href="../Class%20zur%20Zweikanalanalyse.html#ZweikanalAnalyseClass.ZweikanalAnalyse.computeCoherence">[Doku]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">computeCoherence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Berechnet die Kohärenzfunktion zwischen den beiden Signalen.</span>
+<span class="sd">        Die Kohärenz ist definiert als:</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            \\gamma^2(f) = \\frac{\\left| C_{xy}(f) \\right|^2}{C_{xx}(f) \\cdot C_{yy}(f)}</span>
+<span class="sd">        </span>
+<span class="sd">        Dabei ist :math:`C_{xy}(f)` das Kreuzleistungsspektrum und</span>
+<span class="sd">        :math:`C_{xx}(f)`, :math:`C_{yy}(f)` die jeweiligen AutoLeistungsspektren.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Erforderlich für die Berechnung sind:</span>
+
+<span class="sd">            - `self.csd`  (ndarray) : Kreuzleistungsspektrum der beiden Signale.</span>
+<span class="sd">            - `self.psd1` (ndarray) : Autoeistungsspektrum des ersten Signals.</span>
+<span class="sd">            - `self.psd2` (ndarray) : Autoeistungsspektrum des zweiten Signals.</span>
+
+<span class="sd">            Die Methode berechnet:</span>
+
+<span class="sd">            - `coherence` (ndarray): Die berechnete Kohärenzfunktion.</span>
+
+<span class="sd">            Das Ergebnis wird mit der `set_coherence()` Methode gespeichert. (Siehe Dokumentation)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">coherence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">csd</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">psd1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">psd2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_coherence</span><span class="p">(</span><span class="n">coherence</span><span class="p">)</span></div>
+
+        
+<div class="viewcode-block" id="ZweikanalAnalyse.set_coherence">
+<a class="viewcode-back" href="../Class%20zur%20Zweikanalanalyse.html#ZweikanalAnalyseClass.ZweikanalAnalyse.set_coherence">[Doku]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_coherence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">coherence</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Speichert die Kohärenzfunktion.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            coherence (array): Frequenzabhängige Kohärenz zwischen den Signalen</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Die Methode speichert die berechete Kohärenz (`coherence`) in:</span>
+
+<span class="sd">            - `self.coherence` (ndarray): Objektattribut zur berechneten Kohärenz.</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coherence</span> <span class="o">=</span> <span class="n">coherence</span></div>
+</div>
+
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2025, Omar Ben Salem, Gwendal Frühauf
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=245627df"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../_static/translations.js?v=9bf55d28"></script>
+    </body>
+</html>

@@ -1,0 +1,38 @@
+body {
+    font-family: "Century Gothic", Arial, sans-serif !important;
+}
+
+.sidebar-brand-text {
+    width: 270px !important;
+    max-width: 270px !important;
+    overflow: hidden !important;      /* Hide overflow text */
+    text-overflow: ellipsis !important; /* Show ... if text too long */
+    padding-left: 0px!important;
+}
+
+.toctree-wrapper.compound .caption-text {
+    text-transform: capitalize !important;
+    font-weight: bold !important;
+    font-size: 32px !important;
+}
+
+.sidebar-drawer {
+    width: 290px !important;
+    padding-left: 10px!important;
+    padding-right: 10px!important;
+
+}
+
+.sidebar-brand {
+padding-left: 0px !important;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Century Gothic", Arial, sans-serif !important;
+}
+
+.justified-text {
+    text-align: justify !important;
+}
+
